@@ -1,0 +1,65 @@
+{% load staticfiles i18n %}
+<!DOCTYPE html>
+<html lang="en"><!--<![endif]--><!-- BEGIN HEAD --><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+     <meta charset="UTF-8">
+    <title>Trang web của anh em mình | Trang đăng nhập</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta content="" name="description">
+	<meta content="" name="author">
+     <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <!-- GLOBAL STYLES -->
+     <!-- PAGE LEVEL STYLES -->
+     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magic.css' %}">
+     <!-- END PAGE LEVEL STYLES -->
+   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+<body>
+   <!-- PAGE CONTENT --> 
+    <div class="container">
+    <div class="text-center">
+      <div class="img-login" data-name="a Hưng">
+            <img class="profile-img small img-circle"  src="https://secure.gravatar.com/avatar/3f13f5fa03c95c7cede8e9a9a474ac52.png?s=200&r=PG&d=404">
+      </div>
+      <div class="img-login" data-name="oMet">
+            <img class="profile-img small img-circle"  src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/c0.0.160.160/p160x160/11608_373424162819254_2043029436955836004_n.jpg?oh=b064caae5f1cc2c61026de977343e3f1&oe=55184D6D&__gda__=1426544220_48597063de14f4b91395acce335ceaf2">
+      </div>
+    </div>
+    <div class="tab-content">
+        <div id="login" class="tab-pane active">
+            <form method="post" action="{% url django.contrib.auth.views.login %}" class="form-signin">
+			{% csrf_token %}
+                {% if form.errors %}
+				<div class="alert alert-danger" role="alert">Mật khẩu hoặc tên đăng nhập không đúng</div>
+				{% endif %}
+                <input type="hidden" value="" id="id_username" name="username" >
+                <input type="password" id="id_password" name="password" placeholder="Password" class="form-control">
+				<input type="hidden" name="next" value="{{ next }}" />
+				<div class="text-center">
+					<button class="btn text-muted text-center btn-danger text-center" type="submit">Đăng nhập</button>
+    			</div>
+            </form>
+        </div>
+	</div>
+    <div id="fb-root"></div>
+	  <!--END PAGE CONTENT -->     
+	      
+      <!-- PAGE LEVEL SCRIPTS -->
+      <!--END PAGE LEVEL SCRIPTS -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/login.js' %}" ></script>
+    <script type="text/javascript" src="{% static 'js/face.js' %}" ></script>
+    <!-- END BODY -->
+<button onclick="login()">Login</button>
+</body>
+</html>
+

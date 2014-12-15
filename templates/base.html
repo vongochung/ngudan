@@ -1,0 +1,57 @@
+{% load staticfiles i18n %}
+{% include 'common/homepage/header.html'  %}
+<title>{% block title %}ngudan.com| Trang web của một ngư dân thích công nghệ:){% endblock %}</title>
+<meta property="og:description" name="description" content="" />
+<meta name="keywords" content="{% block keyword %}tin tuc, tin tức, tin tuc trong ngay, bóng đá, thời trang, cười, tintuc, 24h, tin nhanh , the thao, tin nhanh, thoi trang, thời sự, bong da, bao cong an, bao an ninh, thoi su, giai tri, giải trí, bao{% endblock %}" />
+<meta name="news_keywords" content="{% block news_keyword %}tin tuc, tin tức, tin tuc trong ngay, bóng đá, thời trang, cười, tintuc, 24h, tin nhanh , the thao, tin nhanh, thoi trang, thời sự, bong da, bao cong an, bao an ninh, thoi su, giai tri, giải trí, bao{% endblock %}" />
+<meta property="og:site_name" content="{% block fb_site_name %}Tin tức ngư dân{% endblock %}" />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="vi_VN" />
+<meta property="fb:app_id" content="332023790214859" />
+<meta property="fb:admins" content="{% block fb_admin %}100000866550113{% endblock %}" />
+<meta property="og:title" content="{% block fb_title %}Tin tức ngudan.com | tin nhanh bong da | the thao | thoi trang, giai tri vn | bao online{% endblock %}" />    
+<meta property="og:url" content="{% block fb_url %}http://ngudan.com/{% endblock %}" />
+<meta content="{% block fb_image %}{% static 'images/nd.png' %}{% endblock %}" property="og:image"/>
+</head>
+<body>
+<header id="header">
+    <div class="container top">
+        <div class="col-md-8 menu-top">
+            <a href="/" ><img src="{% static 'images/logo.png' %}"></a>
+            <div class="menu">
+                <div class="container">
+                    <nav class="navbar-inverse">
+                        <div class="container">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                            </div>
+
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="collapse navbar-collapse navbar-ex1-collapse" id="main-menu">
+                                <ul class="nav navbar-nav main">
+                                    <li><a href="#">{% trans "Xem nhiều" %}</a></li>
+                                    <li><a href="#">{% trans "Giới thiệu" %}</a></li>
+                                    <li><a href="#">{% trans "Nội quy" %}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>            
+</header>
+<div class="container content">
+    {% block content %}
+    {% endblock %}
+</div>
+{% include 'common/homepage/footer.html'  %}
+{% block js %}
+{% endblock %}
+   </body>
+</html>

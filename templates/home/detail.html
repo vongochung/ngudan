@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% load staticfiles i18n %}
+{% load humanize %}
+{% load tz %}
+{% block content %}
+<!--One Post -->
+<div class="col-md-7 col-sm-12 col-xs-12 post">
+    <div class="header-post">
+        <a href="#">
+            <div class="head-img">
+            <img class="profile-img small img-circle " src="https://i1.ytimg.com/vi/{{ post.link  }}/default.jpg"/>
+                <!--<img class="profile-img small img-circle " src="{{ post.get_image }}">-->
+            </div>
+            <span class="head-name">{{ post.author }}</span><span><br/><span>{{post.date|timesince }} trước</span>
+            <span class="pull-right time-post">{{post.date|naturalday }} - lúc {{ post.translate|time:"P"  }}</span>
+        </a>
+    </div>
+    <h2 class="title-post"><a href="/{{post.category.slug}}/{{post.slug}}/">{{ post.title|escape }}</a></h2>
+    <div id="video">
+        <div class="player">
+            <object>
+                  <param name="movie"
+                         value="https://www.youtube.com/v/{{ post.link }}?version=3&autoplay=0&modestbranding=0&showinfo=0&theme=dack&color=red&fs=1&rel=1&start={{ post.start }}&end={{ post.end }}"></param>
+                   <param name="color" value="white"></param>
+                   <param name="allowscriptaccess" value="always"></param>
+                  <embed src="https://www.youtube.com/v/{{ post.link }}?version=3&autoplay=0&modestbranding=1&showinfo=0&theme=dack&color=red&fs=1&rel=0&start={{ post.start }}&end={{ post.end }}"
+                         type="application/x-shockwave-flash"
+                            width="640" height="390"
+                         color="white"
+                         allowfullscreen="true"
+                         allowscriptaccess="always" ></embed>
+            </object>
+            <div class="logo"></div>
+        </div>
+    </div>
+    <div class="comment-facebook">
+    <div class="fb-comments" data-href="{{HOST}}/{{ post.category.slug }}/{{ post.slug }}/" data-width="100%" data-numposts="5" data-colorscheme="light"></div>
+    </div>
+</div>
+<!--End Post-->
+{% endblock %}
