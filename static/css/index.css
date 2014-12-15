@@ -333,6 +333,9 @@ footer ul li{
     width: 100% !important;
 }
 
+.bottom-post{
+    margin-bottom: 20px;
+}
 @media screen and (max-width: 800px){
     .content{
         padding-top: 70px;
