@@ -1,7 +1,8 @@
 {% load staticfiles i18n %}
 {% include 'common/homepage/header.html'  %}
 <title>{% block title %}ngudan.com| Trang web của một ngư dân thích công nghệ:){% endblock %}</title>
-<meta property="og:description" name="description" content="" />
+<meta name="description" content="{% block description %}{% endblock %}" />
+<meta property="og:description" content="{% block descriptions %}{% endblock %}" />
 <meta name="keywords" content="{% block keyword %}tin tuc, tin tức, tin tuc trong ngay, bóng đá, thời trang, cười, tintuc, 24h, tin nhanh , the thao, tin nhanh, thoi trang, thời sự, bong da, bao cong an, bao an ninh, thoi su, giai tri, giải trí, bao{% endblock %}" />
 <meta name="news_keywords" content="{% block news_keyword %}tin tuc, tin tức, tin tuc trong ngay, bóng đá, thời trang, cười, tintuc, 24h, tin nhanh , the thao, tin nhanh, thoi trang, thời sự, bong da, bao cong an, bao an ninh, thoi su, giai tri, giải trí, bao{% endblock %}" />
 <meta property="og:site_name" content="{% block fb_site_name %}Tin tức ngư dân{% endblock %}" />

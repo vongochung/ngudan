@@ -3,6 +3,34 @@
 {% load staticfiles i18n %}
 {% load humanize %}
 {% load tz %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block fb_image %}
+https://i1.ytimg.com/vi/{{ post.link  }}/default.jpg
+{% endblock %}
+
+{% block fb_site_name %}
+    {{ post.title }}
+{% endblock %}
+
+{% block fb_url %}
+    {{HOST}}/{{post.category.slug}}/{{post.slug}}
+{% endblock %}
+
+{% block fb_title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block description %}
+    {{ post.title }}
+{% endblock %}
+{% block descriptions %}
+    {{ post.title }}
+{% endblock %}
+
 {% block content %}
 <!--One Post -->
 <div class="col-md-7 col-sm-12 col-xs-12 post">

@@ -99,4 +99,4 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = False
 
-HOST = "http://localhost:8000"#"http://ngudan.com"
+HOST = "http://ngudan.com"
