@@ -38,6 +38,17 @@ function loading(btn)
     }
 }
 
+function toogleMenu(){
+   $('#category').toggleClass('hides');
+   if ($('#category').hasClass('hides')) {
+        $('#category').animate({left:0});
+        $('#btn-pullout').animate({left:242});
+   } else{
+        $('#category').animate({left: -242});
+        $('#btn-pullout').animate({left:0});
+   }
+}
+
 
 function get_more_post(){
     var scrollAmount = $(window).scrollTop(),
@@ -51,9 +62,13 @@ function get_more_post(){
 $(document).on("click",".viewmore-post",function(e) {
     var $ele = $(this);
     loading($ele)
-    var page = $(this).data("page");
+    var page = $(this).data("page"),
+    category = $(this).data("category");
     var data = {
         "page": page
+    }
+    if ( typeof category !== "undefined"){
+        data["category"] = category;
     }
     $.ajax({
         url: '/get-posts/',

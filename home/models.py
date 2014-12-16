@@ -6,7 +6,7 @@ import datetime
 from django.core.paginator import Paginator, PageNotAnInteger
 
 from django.template.defaultfilters import slugify
-
+from google.appengine.api import memcache
 
 class UtcTzinfo(datetime.tzinfo):
 
@@ -33,6 +33,7 @@ class Category(models.Model):
     name = models.CharField(max_length=135, unique=True, null=True)
     slug = models.SlugField(blank=False, max_length=255, unique=True)
     parent_id = models.ForeignKey('self', null=True, blank=True)
+    order = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.name
@@ -44,6 +45,8 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
+        if memcache.get('categories') is not None:
+            memcache.delete('categories')
         super(Category, self).save(*args, **kwargs)
 
 
@@ -56,18 +59,30 @@ class POST(models.Model):
     link = models.TextField(null=True,blank=True)
     start = models.IntegerField(null=True,blank=True)
     end = models.IntegerField(null=True,blank=True)
-    views = models.IntegerField(null=True,blank=True)
-    likes = models.IntegerField(null=True,blank=True)
-    comments = models.IntegerField(null=True,blank=True)
+    views = models.IntegerField(null=True,blank=True,default=0)
+    likes = models.IntegerField(null=True,blank=True,default=0)
+    comments = models.IntegerField(null=True,blank=True,default=0)
     date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return u'%s' % self.title
 
+    def updateView(self):
+        if self.views is None:
+            self.views = 1
+        else:
+            self.views = self.views + 1
+        self.save()
+
     def save(self, *args, **kwargs):
-        #if self.slug is None :
         self.slug = slugify(self.title)
         self.link = self.link.replace("https://www.youtube.com/watch?v=", "");
+        if memcache.get('post-trang-chu') is not None:
+            memcache.delete('post-trang-chu')
+
+        if memcache.get(self.category.slug) is not None:
+            memcache.delete(self.category.slug)
+            
         super(POST, self).save(*args, **kwargs)
 
 

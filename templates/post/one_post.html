@@ -2,7 +2,7 @@
 {% load humanize %}
 {% load tz %}
 <!--One Post -->
-<div class="col-md-7 col-sm-6 col-xs-12 post">
+<div class="col-md-12 col-sm-12 col-xs-12 post">
     <div class="header-post">
         <a href="#">
             <div class="head-img">
@@ -33,7 +33,7 @@
     </div>
     <div class="clearfix bottom-post">
         <div class="fb-like" data-href="{{HOST}}/{{post.category.slug}}/{{post.slug}}/" data-width="100" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
-        <a class="pull-right" href="{{HOST}}/{{post.category.slug}}/{{post.slug}}#binhluan/">Bình luận</a>
+        <a class="pull-right" href="{{HOST}}/{{post.category.slug}}/{{post.slug}}#binhluan/">Bình luận({{post.comments|default_if_none:"0"}})</a><a href="{{HOST}}/{{post.category.slug}}/{{post.slug}}/" class="pull-right" style="margin-right: 10px;">Xem({{post.views|default_if_none:"0"}})</a>
     </div>
 </div>
 <!--End Post-->

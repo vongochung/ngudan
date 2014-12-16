@@ -1,8 +1,0 @@
-{% load staticfiles i18n %}
-{% load humanize %}
-{% if hasnext %}
-    <a href="javascript:void(0)" class="viewmore-comment" data-page="{{ next_page }}" data-post-id="{{ post_id }}">{% trans "Xem thêm" %}</a>
-{% endif %}
-{% for comment in comments %}
-	{% include 'comment/one_comment.html' %}
-{% endfor %}

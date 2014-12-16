@@ -56,6 +56,27 @@ indexes:
   - name: __key__
     direction: desc
 
+- kind: home_category
+  properties:
+  - name: name
+  - name: order
+    direction: desc
+  - name: __key__
+    direction: desc
+
+- kind: home_category
+  properties:
+  - name: order
+  - name: __key__
+    direction: desc
+
+- kind: home_category
+  properties:
+  - name: order
+    direction: desc
+  - name: __key__
+    direction: desc
+
 - kind: home_comment
   properties:
   - name: __key__

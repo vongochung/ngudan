@@ -23,11 +23,12 @@ class CategoryForm(forms.ModelForm):
 
     class Meta:
         model = Category
-        fields = ('name', 'parent_id')
+        fields = ('name', 'parent_id', 'order')
 
 
 class CustomCategoryAdmin(admin.ModelAdmin):
     fieldsets = None
+    list_display = ('name', 'order')
     form = CategoryForm
 
 admin.site.register(POST, CustomPOSTAdmin)

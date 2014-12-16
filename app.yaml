@@ -35,3 +35,9 @@ handlers:
 
 - url: /.*
   script: djangoappengine.main.application
+
+pagespeed:
+  domains_to_rewrite:
+  - www.ngudan.com
+  enabled_rewriters:
+  - MinifyCss

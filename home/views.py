@@ -10,45 +10,78 @@ from django.contrib.auth.decorators import login_required
 from home.models import POST, Category
 from datetime import datetime
 from django.core.paginator import Paginator, PageNotAnInteger
-
 now = datetime.now()
+from google.appengine.api import memcache
 
 def index(request):
-	posts_list = POST.objects.all().order_by('-date')
+	posts_list = memcache.get('post-trang-chu')
+	if posts_list is None:
+		posts_list = POST.objects.all().order_by('-date')
+		memcache.set('post-trang-chu', list(posts_list), 300)
 	paginator = Paginator(posts_list, 5)
 	posts = paginator.page(1)
-	return render_to_response('home/index.html', {"posts":posts}, context_instance=RequestContext(request))
+
+	categories = memcache.get('categories')
+	if categories is None:
+		categories = Category.objects.all().order_by('order')
+		memcache.set('categories', list(categories), 300)
+
+	return render_to_response('home/index.html', {"posts":posts, "categories":categories}, context_instance=RequestContext(request))
 
 @login_required(login_url='/accounts/login/')
 def create_post(request):
 	if request.method == 'POST':
 		post = POST()
-        post.content = request.POST.get('link')
-        post.author = request.user
-        post.date = now
-        post.save()
+		post.content = request.POST.get('link')
+		post.author = request.user
+		post.date = now
+		post.save()
 	return HttpResponseRedirect('/')
 
 def get_posts(request):
 	if request.method == 'POST':
-		posts_list = POST.objects.all().order_by('-date')
-		paginator = Paginator(posts_list, 5)
+		category = None
 		page = request.POST.get('page')
+
+		if "category" in request.POST:
+			category = request.POST["category"]
+			cate= get_object_or_404(Category,slug=category)
+			posts_list = POST.objects.filter(category=cate).order_by('-date')
+		else:
+			posts_list = POST.objects.all().order_by('-date')
+
+		paginator = Paginator(posts_list, 5)
+		
 		try:
 			posts = paginator.page(page)
 		except PageNotAnInteger:
 			return HttpResponse(status=400)
-		return render_to_response('post/post_ajax.html', {"posts":posts}, context_instance=RequestContext(request))
+		data = {"posts":posts}
+		if category is not None:
+			data["cate_current"] = category
+		return render_to_response('post/post_ajax.html', data, context_instance=RequestContext(request))
 
 	return HttpResponse(status=400)
 
 def detail_post(request, category=None, slug=None):
+	posts_list = memcache.get('post-trang-chu')
+	if posts_list is not None:
+		memcache.delete("post-trang-chu")
+
 	post = get_object_or_404(POST, slug=slug)
-	return render_to_response('home/detail.html', {"post":post}, context_instance=RequestContext(request))
+
+	post.updateView()
+	categories = Category.objects.all().order_by('order')
+	return render_to_response('home/detail.html', {"post":post,"categories":categories}, context_instance=RequestContext(request))
 
 def category(request, category=None):
 	cate= get_object_or_404(Category,slug=category)
-	posts_list = POST.objects.filter(category=cate).order_by('-date')
+	posts_list = memcache.get(category)
+	if posts_list is None:		
+		posts_list = POST.objects.filter(category=cate).order_by('-date')
+		memcache.set(category, list(posts_list), 300) 
 	paginator = Paginator(posts_list, 5)
 	posts = paginator.page(1)
-	return render_to_response('home/index.html', {"posts":posts, "category":cate}, context_instance=RequestContext(request))
+
+	categories = Category.objects.all().order_by('order')
+	return render_to_response('home/index.html', {"posts":posts,"categories":categories, "cate_current":cate}, context_instance=RequestContext(request))

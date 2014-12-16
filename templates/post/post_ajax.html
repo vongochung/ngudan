@@ -5,6 +5,6 @@
 {% endfor %}
 {% if posts.has_next %}
 <div class="col-md-7 col-sm-6 col-xs-6 post next-post">
-    <a href="javascript:void(0)" class="viewmore-post" data-page="{{ posts.next_page_number}}">{% trans "Xem thêm" %}</a>
+    <a href="javascript:void(0)" class="viewmore-post" {% if cate_current != None %}data-category={{ cate_current.slug }}{% endif %} data-page="{{ posts.next_page_number}}">{% trans "Xem thêm" %}</a> 
 </div>
 {% endif %}
