@@ -12,7 +12,10 @@ from datetime import datetime
 from django.core.paginator import Paginator, PageNotAnInteger
 now = datetime.now()
 from google.appengine.api import memcache
+import json
+from django.views.decorators.cache import cache_page
 
+@cache_page(60 * 3)
 def index(request):
 	posts_list = memcache.get('post-trang-chu')
 	if posts_list is None:
@@ -46,9 +49,14 @@ def get_posts(request):
 		if "category" in request.POST:
 			category = request.POST["category"]
 			cate= get_object_or_404(Category,slug=category)
-			posts_list = POST.objects.filter(category=cate).order_by('-date')
+			posts_list = memcache.get('categories-%s' % category)
+			if posts_list is None:
+				posts_list = POST.objects.filter(category=cate).order_by('-date')
+				memcache.set('categories-%s' % category, list(posts_list), 300)
 		else:
-			posts_list = POST.objects.all().order_by('-date')
+			posts_list = memcache.get('post-trang-chu')
+			if posts_list is None:
+				posts_list = POST.objects.all().order_by('-date')
 
 		paginator = Paginator(posts_list, 5)
 		
@@ -59,10 +67,14 @@ def get_posts(request):
 		data = {"posts":posts}
 		if category is not None:
 			data["cate_current"] = category
-		return render_to_response('post/post_ajax.html', data, context_instance=RequestContext(request))
+
+		html = render_to_string("post/post_ajax.html", data)
+		serialized_data = json.dumps({"html": html})
+		return HttpResponse(serialized_data, mimetype='application/json')
 
 	return HttpResponse(status=400)
 
+@cache_page(60 * 4)
 def detail_post(request, category=None, slug=None):
 	posts_list = memcache.get('post-trang-chu')
 	if posts_list is not None:
@@ -74,6 +86,7 @@ def detail_post(request, category=None, slug=None):
 	categories = Category.objects.all().order_by('order')
 	return render_to_response('home/detail.html', {"post":post,"categories":categories}, context_instance=RequestContext(request))
 
+@cache_page(60 * 15)
 def category(request, category=None):
 	cate= get_object_or_404(Category,slug=category)
 	posts_list = memcache.get(category)
