@@ -4,7 +4,7 @@
 	{% include 'post/one_post.html' %}
 {% endfor %}
 {% if posts.has_next %}
-<div class="col-md-7 col-sm-6 col-xs-6 post next-post">
+<div class="col-md-12 col-sm-12 col-xs-12 post next-post">
     <a href="javascript:void(0)" class="viewmore-post" {% if cate_current != None %}data-category={{ cate_current.slug }}{% endif %} data-page="{{ posts.next_page_number}}">{% trans "Xem thêm" %}</a> 
 </div>
 {% endif %}

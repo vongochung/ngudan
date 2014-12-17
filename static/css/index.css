@@ -280,21 +280,22 @@ footer ul li{
     top: 0px;
     overflow: visible;
     z-index: 9998;
+    text-align: left;
 }
 #category a{
-    text-align: center;
     display: block;
     padding: 5px;
-    color: #A36060;
+    color: #000;
     font-size: 16px;
 }
 #category a:hover,
 .menu-active{
-    background-color: #CC181E;
+    border-left: 4px solid #000;
     text-decoration: none;
+    font-weight: bold;
 }
 #category a:hover{
-    background-color:  #fff;
+    border-left: 4px solid #CC181E;
 }
 #btn-pullout{
     position: fixed;
@@ -346,7 +347,7 @@ footer ul li{
     }
     #category a:hover{
         background-color: #CC181E;
-    }
+    }   
 }
 
 @media screen and (min-width: 768px) and (max-width: 800px){
@@ -377,5 +378,10 @@ footer ul li{
     }
     #post-wrap {
         left: 0;
+    }
+}
+@media screen and (max-width: 990px){
+    .menu-active{
+        border-left: 4px solid #CC181E !important;
     }
 }

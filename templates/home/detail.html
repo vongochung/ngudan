@@ -73,16 +73,6 @@ https://i1.ytimg.com/vi/{{ post.link  }}/default.jpg
       <a href="{{HOST}}/{{category.slug}}" class="{% if post.category == category %}menu-active{% endif %}">{{ category.name }}</a>
     {% endfor %}
   </div>
-  <div class="col-md-3 col-sm-6 col-xs-12">
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- quangcao-doc -->
-    <ins class="adsbygoogle"
-         style="display:inline-block;width:280px;height:600px"
-         data-ad-client="ca-pub-1265480470267161"
-         data-ad-slot="1652404137"></ins>
-    <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
+  <a id="btn-pullout" class="visible-xs visible-sm" href="javascript:toogleMenu()"><i class="fa fa-bars"></i></a>
 </div>
 {% endblock %}

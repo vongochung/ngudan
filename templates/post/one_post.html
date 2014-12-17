@@ -9,7 +9,7 @@
             <img class="profile-img small img-circle " src="https://i1.ytimg.com/vi/{{ post.link  }}/default.jpg"/>
                 <!--<img class="profile-img small img-circle " src="{{ post.get_image }}">-->
             </div>
-            <span class="head-name">{{ post.author }}</span><span><br/><time class="timesince" datetime="{{post.date|date:'c'}}">{{post.date|date:"c"}}</time>
+            <span class="head-name">{{ post.author }}</span>
             <span class="pull-right time-post">{{post.date|naturalday }} - lúc {{ post.translate|time:"P"  }}</span>
         </a>
     </div>
