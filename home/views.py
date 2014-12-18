@@ -15,12 +15,19 @@ from google.appengine.api import memcache
 import json
 from django.views.decorators.cache import cache_page
 
-#@cache_page(60 * 3)
-def index(request):
-	posts_list = memcache.get('post-trang-chu')
-	if posts_list is None:
-		posts_list = POST.objects.all().order_by('-date')
-		memcache.set('post-trang-chu', list(posts_list), 300)
+@cache_page(60 * 3)
+def index(request, views=None):
+	posts_list = None
+	if views is not None:
+		posts_list = memcache.get('post-views')
+		if posts_list is None:
+			posts_list = POST.objects.all().order_by('-views')
+			memcache.set('post-views', list(posts_list), 300)
+	else:
+		posts_list = memcache.get('post-trang-chu')
+		if posts_list is None:
+			posts_list = POST.objects.all().order_by('-date')
+			memcache.set('post-trang-chu', list(posts_list), 300)
 	paginator = Paginator(posts_list, 5)
 	posts = paginator.page(1)
 
@@ -74,7 +81,7 @@ def get_posts(request):
 
 	return HttpResponse(status=400)
 
-#@cache_page(60 * 4)
+@cache_page(60 * 4)
 def detail_post(request, category=None, slug=None):
 	posts_list = memcache.get('post-trang-chu')
 	if posts_list is not None:
@@ -86,7 +93,7 @@ def detail_post(request, category=None, slug=None):
 	categories = Category.objects.all().order_by('order')
 	return render_to_response('home/detail.html', {"post":post,"categories":categories}, context_instance=RequestContext(request))
 
-#@cache_page(60 * 15)
+@cache_page(60 * 15)
 def category(request, category=None):
 	cate= get_object_or_404(Category,slug=category)
 	posts_list = memcache.get(category)

@@ -1,3 +1,4 @@
+// use: <time class="timesince" datetime="{{post.date|date:'c'}}">{{post.date|date:"c"}}</time>
 (function(factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as anonymous module.
