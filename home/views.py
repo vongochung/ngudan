@@ -18,11 +18,16 @@ from django.views.decorators.cache import cache_page
 @cache_page(60 * 3)
 def index(request, views=None):
 	posts_list = None
-	if views is not None:
+	if views is not None and views == "xem-nhieu":
 		posts_list = memcache.get('post-views')
 		if posts_list is None:
 			posts_list = POST.objects.all().order_by('-views')
 			memcache.set('post-views', list(posts_list), 300)
+	elif views is not None and views == "binh-luan-nhieu":
+		posts_list = memcache.get('post-comments')
+		if posts_list is None:
+			posts_list = POST.objects.all().order_by('-comments')
+			memcache.set('post-comments', list(posts_list), 300)
 	else:
 		posts_list = memcache.get('post-trang-chu')
 		if posts_list is None:
