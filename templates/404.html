@@ -1,21 +1,8 @@
 {% extends 'base.html' %}
-{% block title %}Page not found{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Trang không tồn tại" %}{% endblock %}
 
 {% block content %}
-<div class="alert alert-warning">Trang web bạn tìm kiếm hiện không khả dụng.</div>
+<div class="alert alert-warning">{% trans "Trang web bạn tìm kiếm hiện không khả dụng." %}</div>
 <div>
-	<script>
-	  (function() {
-	    var cx = '002722224632743787005:ug-zhuopxve';
-	    var gcse = document.createElement('script');
-	    gcse.type = 'text/javascript';
-	    gcse.async = true;
-	    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-	        '//www.google.com/cse/cse.js?cx=' + cx;
-	    var s = document.getElementsByTagName('script')[0];
-	    s.parentNode.insertBefore(gcse, s);
-	  })();
-	</script>
-	<gcse:search>Tìm kiếm</gcse:search>
-</div>
 {% endblock %}

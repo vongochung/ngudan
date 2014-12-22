@@ -8,6 +8,8 @@ from django.core.paginator import Paginator, PageNotAnInteger
 from django.template.defaultfilters import slugify
 from google.appengine.api import memcache
 
+from tinymce.models import HTMLField
+
 class UtcTzinfo(datetime.tzinfo):
 
     def utcoffset(self, dt):
@@ -30,7 +32,7 @@ TZINFOS = {
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=135, unique=True, null=True)
+    name = HTMLField()#models.CharField(max_length=135, unique=True, null=True)
     slug = models.SlugField(blank=False, max_length=255, unique=True)
     parent_id = models.ForeignKey('self', null=True, blank=True)
     order = models.IntegerField(default=0)

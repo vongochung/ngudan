@@ -26,6 +26,9 @@ INSTALLED_APPS = (
     'dbindexer',
     'home',
     'pytz',
+    'mce_filebrowser',
+    'tinymce',
+
 
 
     # djangoappengine should come last, so it can override a few manage.py commands
@@ -40,6 +43,7 @@ MIDDLEWARE_CLASSES = (
     'autoload.middleware.AutoloadMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',    
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
@@ -49,6 +53,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.core.context_processors.media',
     'context_processors.host_name',
+    "django.core.context_processors.i18n",
 )
 
 # List of finder classes that know how to find static files in
@@ -75,10 +80,17 @@ TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
 
 
 ROOT_URLCONF = 'urls'
+gettext = lambda s: s
 
 LANGUAGE_CODE = 'vi'
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+LANGUAGES = (
+  ('en', gettext('English')),
+  ('vi', gettext('VietNam')),
+)
+
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 30 * 60 #
 
 # Local time zone for this installation. Choices can be found here:
@@ -101,3 +113,20 @@ USE_TZ = False
 
 HOST = "http://ngudan.com"
 #HOST = "http://localhost:8000"
+
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': "table,spellchecker,paste,searchreplace",
+    'theme': "advanced",
+    'theme_advanced_buttons1': "formatselect,bold,italic,"
+                               "underline,bullist,numlist,undo,redo,"
+                               "link,unlink,justifyleft,justifycenter,justifyright,justifyfull,"
+                               "fullscreen,pasteword,media,charmap",
+    'theme_advanced_buttons2': 'image,search,pasteword,template,media,charmap,'
+                               'cleanup,grappelli_documentstructure,forecolor',
+    'extended_valid_elements': "script[type|src]",
+    'theme_advanced_blockformats': "p,h2,h3,h4,h5,h6",
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 10,
+    'theme_advanced_resizing': True,
+    'file_browser_callback': 'mce_filebrowser'
+}

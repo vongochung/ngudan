@@ -1,6 +1,6 @@
 {% load staticfiles i18n %}
 {% include 'common/homepage/header.html'  %}
-<title>{% block title %}ngudan.com| Trang web của một ngư dân thích công nghệ:){% endblock %}</title>
+<title>{% block title %}{% trans "ngudan.com| Trang sưu tầm các clip hay, đa thể loại:)" %}{% endblock %}</title>
 <meta name="description" content="{% block description %}{% endblock %}" />
 <meta property="og:description" content="{% block descriptions %}{% endblock %}" />
 <meta name="keywords" content="{% block keyword %}tin tuc, tin tức, tin tuc trong ngay, bóng đá, thời trang, cười, tintuc, 24h, tin nhanh , the thao, tin nhanh, thoi trang, thời sự, bong da, bao cong an, bao an ninh, thoi su, giai tri, giải trí, bao{% endblock %}" />
@@ -37,9 +37,38 @@
                                 <ul class="nav navbar-nav main">
                                     <li><a href="/xem-nhieu/">{% trans "Xem nhiều" %}</a></li>
                                     <li><a href="/binh-luan-nhieu/">{% trans "Bình luận nhiều" %}</a></li>
-                                    <li><a href="/kenh-ca-nhan/">{% trans "Kênh cá nhân" %}</a></li>
+                                    <li class="text-center">
+                                        <div id="search">
+                                            <script>
+                                                (function() {
+                                                    var cx = '002722224632743787005:ug-zhuopxve';
+                                                    var gcse = document.createElement('script');
+                                                    gcse.type = 'text/javascript';
+                                                    gcse.async = true;
+                                                    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                                                        '//www.google.com/cse/cse.js?cx=' + cx;
+                                                    var s = document.getElementsByTagName('script')[0];
+                                                    s.parentNode.insertBefore(gcse, s);
+                                                })();
+                                            </script>
+                                            <gcse:search>Tìm kiếm</gcse:search>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
+                            <!--<div>
+                                <form action="/i18n/setlang/" method="post">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ redirect_to }}" />
+                                    <select name="language">
+                                    {% get_language_info_list for LANGUAGES as languages %}
+                                    {% for language in languages %}
+                                    <option value="{{ language.code }}">{{ language.name_local }} ({{ language.code }})</option>
+                                    {% endfor %}
+                                    </select>
+                                    <input type="submit" value="Go" />
+                                </form>
+                            </div>-->
                         </div>
                     </nav>
                 </div>

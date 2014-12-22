@@ -43,15 +43,6 @@ def index(request, views=None):
 
 	return render_to_response('home/index.html', {"posts":posts, "categories":categories}, context_instance=RequestContext(request))
 
-@login_required(login_url='/accounts/login/')
-def create_post(request):
-	if request.method == 'POST':
-		post = POST()
-		post.content = request.POST.get('link')
-		post.author = request.user
-		post.date = now
-		post.save()
-	return HttpResponseRedirect('/')
 
 def get_posts(request):
 	if request.method == 'POST':
