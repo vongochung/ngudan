@@ -33,12 +33,12 @@ https://i1.ytimg.com/vi/{{ post.link  }}/default.jpg
 
 {% block content %}
 <div class="post-wrap-content col-md-12">
-  <!--One Post -->
-  <div id="post-wrap" class="col-md-9 col-sm-12 col-xs-12 post post-detail">
+    <!--One Post -->
+    <div id="post-wrap" class="col-md-9 col-sm-12 col-xs-12 post post-detail">
       <div class="header-post">
           <a href="#">
               <div class="head-img">
-              <img class="profile-img small img-circle " src="https://secure.gravatar.com/avatar/3f13f5fa03c95c7cede8e9a9a474ac52.png?s=200&r=PG&d=404"/>
+              <img class="profile-img small img-circle " src="{% static 'images/logo1.png' %}"/>
               </div>
               <span class="head-name">{{ post.author }}</span><span><br/><span>{{post.date|timesince }} trước</span>
               <span class="pull-right time-post">{{post.date|naturalday }} - lúc {{ post.translate|time:"P"  }}</span>
@@ -64,7 +64,12 @@ https://i1.ytimg.com/vi/{{ post.link  }}/default.jpg
       </div>
       <div class="comment-facebook">
       <div class="fb-comments" data-href="{{HOST}}/{{ post.category.slug }}/{{ post.slug }}/" data-width="100%" data-numposts="5" data-colorscheme="light"></div>
-      </div>
+    </div>
+    <!-- more Post -->
+    <div id="relative-post">
+          
+    </div>
+    <!-- EndmorePost -->
   </div>
   <!--End Post-->
   <div id="category" class="col-md-3 col-sm-3 col-xs-6">
@@ -73,5 +78,31 @@ https://i1.ytimg.com/vi/{{ post.link  }}/default.jpg
     {% endfor %}
   </div>
   <a id="btn-pullout" class="visible-xs visible-sm" href="javascript:toogleMenu()"><i class="fa fa-bars"></i></a>
+  <!--EndCategory-->
 </div>
+{% endblock %}
+{% block js %}
+  <script type="text/javascript">
+        $(function() {            
+            loading($("#relative-post"));
+            setTimeout(function () {
+                $.ajax({
+                    url: "/relative-post/{{ post.category.slug }}/",
+                    type: "GET",
+                    data:{"post":"{{ post.id }}"},
+                    dataType: 'json',  
+                    success: function (result) {
+                        loading($("#relative-post"));
+                        $("#relative-post").append(result.html);
+                        displayPlayer();
+                        $('[data-toggle="popover"]').popover({trigger: 'hover','placement': 'top'});
+                    },
+                    complete: function () {
+                        console.log("xong");
+                    }
+                });
+            }, 3000);
+        
+        });
+  </script>
 {% endblock %}

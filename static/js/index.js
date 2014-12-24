@@ -1,5 +1,4 @@
 $(function() {
-    $("time.timesince").timesince();
     $(window).on("scroll", get_more_post);
     $(window).on("resize", displayPlayer);
     displayPlayer();
@@ -93,9 +92,7 @@ $(document).on("click",".viewmore-post",function(e) {
         data: data,
     })
     .done(function(data) {    
-        $("#post-wrap").append(data.html);
-        $("time.timesince").timesince();
-            
+        $("#post-wrap").append(data.html);            
     })
     .fail(function() {
         console.log("error");
@@ -108,6 +105,67 @@ $(document).on("click",".viewmore-post",function(e) {
         }catch(ex){
             console.log(ex);
         }
+    });
+        
+});
+
+$(document).on("click",".viewmore-post-not-view",function(e) {
+    var $ele = $(this);
+    loading($ele)
+    var page = $(this).data("page"),
+    category = $(this).data("category");
+    var data = {
+        "page": page
+    }
+    if ( typeof category !== "undefined"){
+        data["category"] = category;
+    }
+    $.ajax({
+        url: '/get-posts-detail-more/',
+        type: 'POST',
+        data: data,
+    })
+    .done(function(data) {    
+        $("#not-view").append(data.html);            
+    })
+    .fail(function() {
+        console.log("error");
+    })
+    .always(function() {
+        $ele.parent().remove();
+        displayPlayer();
+    });
+        
+});
+
+$(document).on("click",".viewmore-post-detail",function(e) {
+    var $ele = $(this);
+    loading($ele)
+    var page = $(this).data("page"),
+    typeGet = $(this).data("type"),
+    category = $(this).data("category");
+    var data = {
+        "page": page,
+        "type":typeGet
+    }
+    if ( typeof category !== "undefined"){
+        data["category"] = category;
+    }
+    $.ajax({
+        url: '/get-posts-detail-more/',
+        type: 'POST',
+        data: data,
+    })
+    .done(function(data) {    
+        $("#"+typeGet).append(data.html);
+        $('[data-toggle="popover"]').popover({trigger: 'hover','placement': 'top'});            
+    })
+    .fail(function() {
+        console.log("error");
+    })
+    .always(function() {
+        $ele.parent().remove();
+        displayPlayer();
     });
         
 });

@@ -309,6 +309,15 @@ footer ul li{
     text-align: center;
 }
 
+.view-list{
+    background-color: #CC181E;
+    color: #fff;
+    font-weight: bold;
+    clear: both;
+}
+.clear-left{
+    clear: left;
+}
 /*======google-search-main====*/
 .cse .gsc-control-cse, .gsc-control-cse{
     padding: 0 !important;
