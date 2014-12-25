@@ -18,7 +18,7 @@
 <header id="header">
     <div class="container top">
         <div class="col-md-8 menu-top">
-            <a href="/" ><img src="{% static 'images/logo.png' %}"></a>
+            <a href="/" id="logo">{% trans 'Ngưdân.com' %}</a>
             <div class="menu">
                 <div class="container">
                     <nav class="navbar-inverse">
@@ -35,8 +35,8 @@
                             <!-- Collect the nav links, forms, and other content for toggling -->
                             <div class="collapse navbar-collapse navbar-ex1-collapse" id="main-menu">
                                 <ul class="nav navbar-nav main">
-                                    <li><a href="/xem-nhieu/">{% trans "Xem nhiều" %}</a></li>
-                                    <li><a href="/binh-luan-nhieu/">{% trans "Bình luận nhiều" %}</a></li>
+                                    <li><a href="{% trans '/xem-nhieu/' %}">{% trans "Xem nhiều" %}</a></li>
+                                    <li><a href="{% trans '/binh-luan-nhieu/' %}">{% trans "Bình luận nhiều" %}</a></li>
                                     <li class="text-center">
                                         <div id="search">
                                             <script>
@@ -56,19 +56,30 @@
                                     </li>
                                 </ul>
                             </div>
-                            <!--<div>
-                                <form action="/i18n/setlang/" method="post">
-                                    {% csrf_token %}
-                                    <input name="next" type="hidden" value="{{ redirect_to }}" />
-                                    <select name="language">
+                            <div id="language" class="btn-group right open">
+                                <form id="form-language" lang="{{LANGUAGE_CODE}}" action="/i18n/setlang/" method="post">
+                                {% csrf_token %}
+                                <input name="next" type="hidden" value="/" /> 
+                                <input name="language" id="set-lang" type="hidden" value="" />                               
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <div class="animated fadeIn on-load" style="display: block;">
+                                        <span class="img-lang {{LANGUAGE_CODE}}"></span>        
+                                        <span class="caret"></span>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
                                     {% get_language_info_list for LANGUAGES as languages %}
                                     {% for language in languages %}
-                                    <option value="{{ language.code }}">{{ language.name_local }} ({{ language.code }})</option>
+                                    <li class="active-language {% if LANGUAGE_CODE == language.code %}active{% endif %}" data-lang="{{ language.code }}">
+                                        <a tabindex="-1" href="javascript:(void)">
+                                            <span class="img-lang {{language.code}}"></span>
+                                                {% trans language.name_local %}
+                                        </a>
+                                    </li>
                                     {% endfor %}
-                                    </select>
-                                    <input type="submit" value="Go" />
+                                </ul>
                                 </form>
-                            </div>-->
+                            </div>
                         </div>
                     </nav>
                 </div>

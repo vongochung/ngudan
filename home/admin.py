@@ -7,7 +7,7 @@ class POSTForm(forms.ModelForm):
 
     class Meta:
         model = POST
-        fields = ('title', 'link', 'description' , 'category', 'start', 'end')
+        fields = ('title','title_en', 'link', 'description','description_en' , 'category', 'start', 'end')
 
 
 class CustomPOSTAdmin(admin.ModelAdmin):
@@ -23,7 +23,7 @@ class CategoryForm(forms.ModelForm):
 
     class Meta:
         model = Category
-        fields = ('name', 'parent_id', 'order')
+        fields = ('name','name_en', 'parent_id', 'order')
 
 
 class CustomCategoryAdmin(admin.ModelAdmin):

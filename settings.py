@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Initialize App Engine and import the default settings (DB backend, etc.).
 # If you want to use a different backend you have to remove all occurences
 # of "djangoappengine" from this file.
@@ -28,9 +29,6 @@ INSTALLED_APPS = (
     'pytz',
     'mce_filebrowser',
     'tinymce',
-
-
-
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
 )
@@ -85,8 +83,8 @@ gettext = lambda s: s
 LANGUAGE_CODE = 'vi'
 
 LANGUAGES = (
-  ('en', gettext('English')),
-  ('vi', gettext('VietNam')),
+  ('en', gettext(u'Tiếng Anh')),
+  ('vi', gettext(u'Tiếng Việt')),
 )
 
 

@@ -16,6 +16,7 @@ from django.views.decorators.cache import cache_page
 from django.db.models import Q
 from home.function import MultiCookie
 now = datetime.now()
+
 @cache_page(60 * 3)
 def index(request, views=None):
 	posts_list = None
@@ -37,12 +38,12 @@ def index(request, views=None):
 	paginator = Paginator(posts_list, 5)
 	posts = paginator.page(1)
 
-	categories = memcache.get('categories')
+	categories = memcache.get('categories-'+request.LANGUAGE_CODE)
 	if categories is None:
 		categories = Category.objects.all().order_by('order')
-		memcache.set('categories', list(categories), 300)
+		memcache.set('categories-'+request.LANGUAGE_CODE, list(categories), 300)
 
-	return render_to_response('home/index.html', {"posts":posts, "categories":categories}, context_instance=RequestContext(request))
+	return render_to_response('home/index.html', {"posts":posts, "categories":categories, "lang":request.LANGUAGE_CODE}, context_instance=RequestContext(request))
 
 
 def get_posts(request):
@@ -52,7 +53,10 @@ def get_posts(request):
 
 		if "category" in request.POST:
 			category = request.POST["category"]
-			cate= get_object_or_404(Category,slug=category)
+			if request.LANGUAGE_CODE == 'vi':
+				cate= get_object_or_404(Category,slug=category)
+			else:
+				cate= get_object_or_404(Category,slug_en=category)
 			posts_list = memcache.get('categories-%s' % category)
 			if posts_list is None:
 				posts_list = POST.objects.filter(category=cate).order_by('-date')
@@ -68,7 +72,7 @@ def get_posts(request):
 			posts = paginator.page(page)
 		except PageNotAnInteger:
 			return HttpResponse(status=400)
-		data = {"posts":posts}
+		data = {"posts":posts, "lang":request.LANGUAGE_CODE}
 		if category is not None:
 			data["cate_current"] = category
 
@@ -99,7 +103,7 @@ def get_posts_detail_more(request):
 			posts = paginator.page(page)
 		except PageNotAnInteger:
 			return HttpResponse(status=400)
-		data = {"posts":posts, "type":typeGet}
+		data = {"posts":posts, "type":typeGet, "lang":request.LANGUAGE_CODE}
 		if category is not None:
 			data["cate_current"] = category
 
@@ -111,11 +115,10 @@ def get_posts_detail_more(request):
 
 @cache_page(60 * 4)
 def detail_post(request, category=None, slug=None):
-	posts_list = memcache.get('post-trang-chu')
-	if posts_list is not None:
-		memcache.delete("post-trang-chu")
-
-	post = get_object_or_404(POST, slug=slug)
+	if request.LANGUAGE_CODE == 'vi':
+		post = get_object_or_404(POST, slug=slug)
+	else:
+		post = get_object_or_404(POST, slug_en=slug)
 
 	post.updateView()
 	oldcookie = MultiCookie(cookie=request.COOKIES.get('viewed_post'))
@@ -127,7 +130,7 @@ def detail_post(request, category=None, slug=None):
 			list_viewed.append(post.id)
 	
 	categories = Category.objects.all().order_by('order')
-	response = render_to_response('home/detail.html', {"post":post,"categories":categories}, context_instance=RequestContext(request))
+	response = render_to_response('home/detail.html', {"post":post,"categories":categories, "lang":request.LANGUAGE_CODE}, context_instance=RequestContext(request))
 	newcookie = MultiCookie(values=list_viewed)
 	response.set_cookie('viewed_post',value=newcookie)
 
@@ -135,7 +138,10 @@ def detail_post(request, category=None, slug=None):
 
 @cache_page(60 * 15)
 def category(request, category=None):
-	cate= get_object_or_404(Category,slug=category)
+	if request.LANGUAGE_CODE == 'vi':
+		cate= get_object_or_404(Category,slug=category)
+	else:
+		cate= get_object_or_404(Category,slug_en=category)
 	posts_list = memcache.get(category)
 	if posts_list is None:		
 		posts_list = POST.objects.filter(category=cate).order_by('-date')
@@ -144,7 +150,7 @@ def category(request, category=None):
 	posts = paginator.page(1)
 
 	categories = Category.objects.all().order_by('order')
-	return render_to_response('home/index.html', {"posts":posts,"categories":categories, "cate_current":cate}, context_instance=RequestContext(request))
+	return render_to_response('home/index.html', {"posts":posts,"categories":categories, "cate_current":cate,"lang":request.LANGUAGE_CODE}, context_instance=RequestContext(request))
 
 def get_array_field(dict_list, field):
     arr_return = []
@@ -166,7 +172,10 @@ def category_post_relative(request, category=None):
 	if list_viewed is None:
 		list_viewed = []
 	
-	cate= get_object_or_404(Category,slug=category)
+	if request.LANGUAGE_CODE == "vi":
+		cate= get_object_or_404(Category,slug=category)
+	else:
+		cate= get_object_or_404(Category,slug_en=category)
 
 	posts_list_not_view = POST.objects.filter(~Q(pk__in=list_viewed),category=cate).order_by('-date')
 
@@ -178,7 +187,8 @@ def category_post_relative(request, category=None):
 	paginator_viewed = Paginator(posts_list__viewed, 6)
 	posts_viewed = paginator_viewed.page(1)
 
-	data = {"posts_not_view":posts_not_view, "posts_viewed":posts_viewed, "cate_current":category}
+	data = {"posts_not_view":posts_not_view, "posts_viewed":posts_viewed, "cate_current":category, "lang":request.LANGUAGE_CODE}
 	html = render_to_string("post/post_relative_ajax.html", data)
 	serialized_data = json.dumps({"html": html})
+
 	return HttpResponse(serialized_data, mimetype='application/json')

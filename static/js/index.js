@@ -109,35 +109,6 @@ $(document).on("click",".viewmore-post",function(e) {
         
 });
 
-$(document).on("click",".viewmore-post-not-view",function(e) {
-    var $ele = $(this);
-    loading($ele)
-    var page = $(this).data("page"),
-    category = $(this).data("category");
-    var data = {
-        "page": page
-    }
-    if ( typeof category !== "undefined"){
-        data["category"] = category;
-    }
-    $.ajax({
-        url: '/get-posts-detail-more/',
-        type: 'POST',
-        data: data,
-    })
-    .done(function(data) {    
-        $("#not-view").append(data.html);            
-    })
-    .fail(function() {
-        console.log("error");
-    })
-    .always(function() {
-        $ele.parent().remove();
-        displayPlayer();
-    });
-        
-});
-
 $(document).on("click",".viewmore-post-detail",function(e) {
     var $ele = $(this);
     loading($ele)
@@ -169,3 +140,9 @@ $(document).on("click",".viewmore-post-detail",function(e) {
     });
         
 });
+
+$(document).on("click",".active-language",function(e) {
+    $("#set-lang").val($(this).data("lang"));
+    $("#form-language").submit();
+});
+

@@ -65,7 +65,13 @@ ul.navbar-nav {
 }
 .menu-top a{
     display: inline-block;
-    margin-top: 15px;
+    margin-top: 10px;
+}
+
+#logo{
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .navbar-inverse .navbar-nav>li{
@@ -318,7 +324,36 @@ footer ul li{
 .clear-left{
     clear: left;
 }
+.detail-posts{
+    height: 45px;
+    overflow: hidden;
+}
+/*==language===*/
+#language{
+    display: inline-block;
+    float: right;
+    margin-top: -60px;
+    margin-right: 50px;
+}
+.img-lang{
+    width: 24px;
+    display: inline-block;
+    height: 14px;
+    background:url("../images/sprite_flags-plus-hk.png") left -128px no-repeat;
+}
+.en{
+    background:url("../images/sprite_flags-plus-hk.png") left -224px no-repeat !important;
+}
+#language span{
+    color: #fff;
+}
 /*======google-search-main====*/
+.gssb_c{
+    z-index: 99999 !important;
+}
+.gsc-completion-container{
+    z-index: 99999 !important;
+}
 .cse .gsc-control-cse, .gsc-control-cse{
     padding: 0 !important;
     background-color: #000 !important;
@@ -343,10 +378,18 @@ footer ul li{
 .gsst_a:hover{
     border-bottom: none !important;
 }
+.gsc-tabsArea > .gsc-tabHeader {
+    height: 30px !important;
+    width: 100px !important;
+}
 #search{
     display: inline-block;
-    max-width: 510px;
+    max-width: 460px;
+    min-width: 460px;
     padding-top: 20px;
+}
+a:hover, a:focus {
+    text-decoration: none !important;
 }
 @media screen and (max-width: 800px){
     .content{
@@ -389,6 +432,11 @@ footer ul li{
     }
     #search{
         max-width: 289px;
+        min-width: 289px;
+    }
+    #language {
+        margin-top: -50px;
+        margin-right: 5px;
     }   
 }
 
@@ -402,6 +450,9 @@ footer ul li{
     .menu > .container{
         margin-top: -49px;
         margin-left: 90px;
+    }
+    #language{
+        margin-right: 150px;
     }
 }
 
@@ -423,10 +474,18 @@ footer ul li{
     }
     #search{
         max-width: 289px;
+        min-width: 289px;
     } 
 }
 @media screen and (max-width: 990px){
     .menu-active{
         border-left: 4px solid #CC181E !important;
+    }
+}
+
+@media screen and (max-width: 480px){
+    #search{
+        max-width: 289px;
+        min-width: 200px;
     }
 }

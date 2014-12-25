@@ -32,8 +32,10 @@ TZINFOS = {
 
 
 class Category(models.Model):
-    name = HTMLField()#models.CharField(max_length=135, unique=True, null=True)
+    name = models.CharField(max_length=135, unique=True, null=True)#HTMLField()
+    name_en = models.CharField(max_length=135, null=True)
     slug = models.SlugField(blank=False, max_length=255, unique=True)
+    slug_en = models.SlugField(blank=False, max_length=255, unique=True)
     parent_id = models.ForeignKey('self', null=True, blank=True)
     order = models.IntegerField(default=0)
 
@@ -47,8 +49,14 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        if memcache.get('categories') is not None:
-            memcache.delete('categories')
+        if self.name_en is None:
+            self.slug_en = slugify(self.name)
+        else:
+            self.slug_en = slugify(self.name_en)
+        if memcache.get('categories-vi') is not None:
+            memcache.delete('categories-vi')
+        if memcache.get('categories-en') is not None:
+            memcache.delete('categories-en')
         super(Category, self).save(*args, **kwargs)
 
 
@@ -57,7 +65,10 @@ class POST(models.Model):
     author = models.ForeignKey(User)
     title = models.CharField(max_length=235, unique=True, null=True)
     slug = models.SlugField(blank=False, max_length=255, unique=True)
+    title_en = models.CharField(max_length=235, unique=True, null=True)
+    slug_en = models.SlugField(blank=False, max_length=255, unique=True)
     description = models.TextField()
+    description_en = models.TextField()
     link = models.TextField(null=True,blank=True)
     start = models.IntegerField(null=True,blank=True)
     end = models.IntegerField(null=True,blank=True)
@@ -78,6 +89,10 @@ class POST(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
+        if self.title_en is None:
+            self.slug_en = slugify(self.title)
+        else:
+            self.slug_en = slugify(self.title_en)
         self.link = self.link.replace("https://www.youtube.com/watch?v=", "");
         if memcache.get('post-trang-chu') is not None:
             memcache.delete('post-trang-chu')

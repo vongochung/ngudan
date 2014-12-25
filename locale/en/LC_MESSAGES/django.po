@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-22 03:31+0000\n"
+"POT-Creation-Date: 2014-12-25 11:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,13 +16,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\settings.py:82
-msgid "VietNam"
-msgstr ""
+#: .\settings.py:86
+msgid "Tiếng Anh"
+msgstr "English"
 
-#: .\settings.py:83 .\django\conf\global_settings.py:63
-msgid "English"
-msgstr ""
+#: .\settings.py:87
+msgid "Tiếng Việt"
+msgstr "Vietnamese"
 
 #: .\django\conf\global_settings.py:52
 msgid "Arabic"
@@ -66,6 +66,10 @@ msgstr ""
 
 #: .\django\conf\global_settings.py:62
 msgid "Greek"
+msgstr ""
+
+#: .\django\conf\global_settings.py:63
+msgid "English"
 msgstr ""
 
 #: .\django\conf\global_settings.py:64
@@ -962,6 +966,8 @@ msgstr ""
 #: .\django\contrib\admin\templates\admin\edit_inline\stacked.html.py:70
 #: .\django\contrib\admin\templates\admin\edit_inline\tabular.html.py:118
 #: .\django\contrib\comments\templates\comments\delete.html.py:12
+#: .\mce_filebrowser\templates\filebrowser.html.py:101
+#: .\mce_filebrowser\templates\filebrowser.html.py:122
 msgid "Remove"
 msgstr ""
 
@@ -6112,7 +6118,7 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-#: .\django\db\models\fields\files.py:321
+#: .\django\db\models\fields\files.py:321 .\mce_filebrowser\models.py:8
 msgid "Image"
 msgstr ""
 
@@ -6761,18 +6767,138 @@ msgstr ""
 msgid "a"
 msgstr ""
 
+#: .\mce_filebrowser\models.py:9
+msgid "Document"
+msgstr ""
+
+#: .\mce_filebrowser\models.py:15
+msgid "File / Image"
+msgstr ""
+
+#: .\mce_filebrowser\models.py:18
+msgid "Create date"
+msgstr ""
+
+#: .\mce_filebrowser\templates\filebrowser.html.py:6
+msgid "File browser"
+msgstr ""
+
+#: .\mce_filebrowser\templates\filebrowser.html.py:64
+msgid "Images list"
+msgstr ""
+
+#: .\mce_filebrowser\templates\filebrowser.html.py:73
+msgid "Documents list"
+msgstr ""
+
+#: .\mce_filebrowser\templates\filebrowser.html.py:80
+msgid "Upload new"
+msgstr ""
+
+#: .\mce_filebrowser\templates\filebrowser.html.py:91
+msgid "Previosly uploaded images"
+msgstr ""
+
+#: .\mce_filebrowser\templates\filebrowser.html.py:106
+msgid "No images uploaded"
+msgstr ""
+
+#: .\mce_filebrowser\templates\filebrowser.html.py:114
+msgid "Previosly uploaded documents"
+msgstr ""
+
+#: .\mce_filebrowser\templates\filebrowser.html.py:127
+msgid "No documents uploaded"
+msgstr ""
+
+#: .\mce_filebrowser\templates\filebrowser.html.py:135
+msgid "Upload file"
+msgstr ""
+
+#: .\mce_filebrowser\templates\filebrowser.html.py:142
+msgid "Insert"
+msgstr ""
+
+#: .\mce_filebrowser\templates\filebrowser.html.py:143
+msgid "Cancel"
+msgstr ""
+
+#: .\templates\404.html.py:3
+msgid "Trang không tồn tại"
+msgstr "Page not found"
+
+#: .\templates\404.html.py:6
+msgid "Trang web bạn tìm kiếm hiện không khả dụng."
+msgstr "The page you have requested not found"
+
+#: .\templates\base.html.py:3
+msgid "ngudan.com| Trang sưu tầm các clip hay, đa thể loại:)"
+msgstr "ngudan.com| the website collect many clip funny..."
+
+#: .\templates\base.html.py:21
+msgid "Ngưdân.com"
+msgstr "Ngudan.com"
+
+#: .\templates\base.html.py:38
+msgid "/xem-nhieu/"
+msgstr "/most-view/"
+
 #: .\templates\base.html.py:38
 msgid "Xem nhiều"
-msgstr "most"
+msgstr "most view"
+
+#: .\templates\base.html.py:39
+msgid "/binh-luan-nhieu/"
+msgstr "/most-comment/"
 
 #: .\templates\base.html.py:39
 msgid "Bình luận nhiều"
 msgstr "most comments"
 
-#: .\templates\base.html.py:40
-msgid "Kênh cá nhân"
-msgstr "Your channel"
+#: .\templates\home\detail.html.py:68
+msgid "trước"
+msgstr "ago"
 
-#: .\templates\home\index.html.py:17 .\templates\post\post_ajax.html.py:8
+#: .\templates\home\detail.html.py:69 .\templates\post\one_post.html.py:12
+msgid "lúc"
+msgstr "at"
+
+#: .\templates\home\index.html.py:13
+msgid "Chuyên mục "
+msgstr "Category"
+
+#: .\templates\home\index.html.py:13
+msgid "chưa có video nào"
+msgstr "haven't video"
+
+#: .\templates\home\index.html.py:18 .\templates\home\index.html.py:20
+#: .\templates\post\more_post_detail.html.py:8
+#: .\templates\post\post_ajax.html.py:9 .\templates\post\post_ajax.html.py:13
+#: .\templates\post\post_relative_ajax.html.py:14
+#: .\templates\post\post_relative_ajax.html.py:31
 msgid "Xem thêm"
 msgstr "View more"
+
+#: .\templates\post\one_post.html.py:28 .\templates\post\one_post.html.py:43
+msgid "Bình luận"
+msgstr "comments"
+
+#: .\templates\post\post_relative_ajax.html.py:3
+msgid "Bạn chưa xem"
+msgstr "You haven't seen"
+
+#: .\templates\post\post_relative_ajax.html.py:10
+msgid "Không có video nào bạn chưa xem"
+msgstr "No video"
+
+#: .\templates\post\post_relative_ajax.html.py:20
+msgid "Bạn đã xem"
+msgstr "You have seen"
+
+#: .\templates\post\post_relative_ajax.html.py:27
+msgid "Không có video nào bạn đã xem"
+msgstr "No video"
+
+#: .\tinymce\views.py:74
+msgid "Error running spellchecker"
+msgstr ""
