@@ -2,6 +2,7 @@ $(function() {
     $(window).on("scroll", get_more_post);
     $(window).on("resize", displayPlayer);
     displayPlayer();
+    set_category();
 });
 
 $.ajaxSetup({
@@ -28,6 +29,13 @@ $.ajaxSetup({
      }
 });
 
+function set_category(){
+    h = $(window).height();
+    if (h < 480){
+        $("#category").css({"max-height": h-20, "overflow-y":"scroll"});
+    }
+   
+}
 function displayPlayer() {
     $(".player").each(function(){
         var player = $(this),
@@ -39,6 +47,7 @@ function displayPlayer() {
         l = offset.left;
         $link.css({left: l+w/2-$link.width()/2, top: t+h/2-$link.height()/2});
     });
+    set_category();
     
 }
 

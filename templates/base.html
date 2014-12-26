@@ -59,7 +59,7 @@
                             <div id="language" class="btn-group right open">
                                 <form id="form-language" lang="{{LANGUAGE_CODE}}" action="/i18n/setlang/" method="post">
                                 {% csrf_token %}
-                                <input name="next" type="hidden" value="/" /> 
+                                    <input name="next" type="hidden" value="{{ redirect|default_if_none:'/' }}" />
                                 <input name="language" id="set-lang" type="hidden" value="" />                               
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     <div class="animated fadeIn on-load" style="display: block;">

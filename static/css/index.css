@@ -435,9 +435,9 @@ a:hover, a:focus {
         min-width: 289px;
     }
     #language {
-        margin-top: -50px;
+        margin-top: -40px;
         margin-right: 5px;
-    }   
+    }
 }
 
 @media screen and (min-width: 768px) and (max-width: 800px){
@@ -453,6 +453,10 @@ a:hover, a:focus {
     }
     #language{
         margin-right: 150px;
+        margin-top: -55px;
+    }
+    #btn-pullout{
+        top: 67px;
     }
 }
 
@@ -476,6 +480,9 @@ a:hover, a:focus {
         max-width: 289px;
         min-width: 289px;
     } 
+    #btn-pullout{
+        top: 65px !important;
+    }
 }
 @media screen and (max-width: 990px){
     .menu-active{

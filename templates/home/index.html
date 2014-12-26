@@ -10,7 +10,7 @@
 		{% for post in posts %}
 		    {% include "post/one_post.html" %}
 		    {% empty %}
-    	<div class="alert alert-warning text-center">{% trans "Chuyên mục " %}{{ cate_current.name }} {% trans "chưa có video nào" %} .</div>
+    	<div class="alert alert-warning text-center">{% trans "Chuyên mục " %} {% if LANGUAGE_CODE == 'vi' %}{{ cate_current.name }}{% else %}{{ cate_current.name_en }}{% endif %} {% trans "chưa có video nào" %} .</div>
 		{% endfor %}
 		{% if posts.has_next %}
 		<div class="col-md-12 col-sm-12 col-xs-12 post next-post">

@@ -7,6 +7,7 @@ from django.core.paginator import Paginator, PageNotAnInteger
 
 from django.template.defaultfilters import slugify
 from google.appengine.api import memcache
+from django.core.cache import cache
 
 from tinymce.models import HTMLField
 
@@ -32,7 +33,7 @@ TZINFOS = {
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=135, unique=True, null=True)#HTMLField()
+    name = HTMLField()#models.CharField(max_length=135, unique=True, null=True)#HTMLField()
     name_en = models.CharField(max_length=135, null=True)
     slug = models.SlugField(blank=False, max_length=255, unique=True)
     slug_en = models.SlugField(blank=False, max_length=255, unique=True)
@@ -102,6 +103,7 @@ class POST(models.Model):
 
         self.expire_view_cache("index")
         self.expire_view_cache("category")
+        cache.clear()
         #self.expire_view_cache("/"+self.category.slug+"/")
             
         super(POST, self).save(*args, **kwargs)

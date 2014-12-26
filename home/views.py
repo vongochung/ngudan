@@ -17,15 +17,20 @@ from django.db.models import Q
 from home.function import MultiCookie
 now = datetime.now()
 
-@cache_page(60 * 3)
+#@cache_page(60 * 3)
 def index(request, views=None):
 	posts_list = None
+	views_most = False
+	comment_most = False
+	lang = request.LANGUAGE_CODE
 	if views is not None and views == "xem-nhieu":
+		views_most = True
 		posts_list = memcache.get('post-views')
 		if posts_list is None:
 			posts_list = POST.objects.all().order_by('-views')
 			memcache.set('post-views', list(posts_list), 300)
 	elif views is not None and views == "binh-luan-nhieu":
+		comment_most = True
 		posts_list = memcache.get('post-comments')
 		if posts_list is None:
 			posts_list = POST.objects.all().order_by('-comments')
@@ -38,13 +43,41 @@ def index(request, views=None):
 	paginator = Paginator(posts_list, 5)
 	posts = paginator.page(1)
 
-	categories = memcache.get('categories-'+request.LANGUAGE_CODE)
+	categories = memcache.get('categories-'+lang)
 	if categories is None:
 		categories = Category.objects.all().order_by('order')
-		memcache.set('categories-'+request.LANGUAGE_CODE, list(categories), 300)
+		memcache.set('categories-'+lang, list(categories), 300)
 
-	return render_to_response('home/index.html', {"posts":posts, "categories":categories, "lang":request.LANGUAGE_CODE}, context_instance=RequestContext(request))
+	redirect = "/"
 
+	if views_most == True:
+		redirect = set_redirect(lang,"xem_nhieu")
+	elif comment_most == True:
+		redirect = set_redirect(lang,"binh_luan_nhieu")
+
+	return render_to_response('home/index.html', {"redirect":redirect, "posts":posts, "categories":categories, "lang":lang}, context_instance=RequestContext(request))
+
+def set_redirect(lang="vi", type_redirect_page=None, post=None, category=None):
+	redirect = "/"
+	if type_redirect_page == "xem_nhieu" and lang == "vi":
+		return "/most-view/"
+	elif type_redirect_page == "xem_nhieu" and lang == "en":
+		return "/xem-nhieu/"
+	elif type_redirect_page == "binh_luan_nhieu" and lang == "en":
+		return "/binh-luan-nhieu/"
+	elif type_redirect_page == "binh_luan_nhieu" and lang == "vi":
+		return "/most-comment/"
+	elif type_redirect_page == "detail" and lang == "en":
+		return "/"+post.category.slug+"/"+post.slug+"/"
+	elif type_redirect_page == "detail" and lang == "vi":
+		return "/"+post.category.slug_en+"/"+post.slug_en+"/"
+	elif type_redirect_page == "category" and lang == "en":
+		return "/"+category.slug+"/"
+	elif type_redirect_page == "category" and lang == "vi":
+		return "/"+category.slug_en+"/"
+	else:
+		return redirect
+		
 
 def get_posts(request):
 	if request.method == 'POST':
@@ -115,7 +148,8 @@ def get_posts_detail_more(request):
 
 @cache_page(60 * 4)
 def detail_post(request, category=None, slug=None):
-	if request.LANGUAGE_CODE == 'vi':
+	lang =  request.LANGUAGE_CODE
+	if lang == 'vi':
 		post = get_object_or_404(POST, slug=slug)
 	else:
 		post = get_object_or_404(POST, slug_en=slug)
@@ -130,7 +164,10 @@ def detail_post(request, category=None, slug=None):
 			list_viewed.append(post.id)
 	
 	categories = Category.objects.all().order_by('order')
-	response = render_to_response('home/detail.html', {"post":post,"categories":categories, "lang":request.LANGUAGE_CODE}, context_instance=RequestContext(request))
+
+	redirect = set_redirect(lang, "detail", post)
+
+	response = render_to_response('home/detail.html', {"redirect":redirect,"post":post,"categories":categories, "lang":lang}, context_instance=RequestContext(request))
 	newcookie = MultiCookie(values=list_viewed)
 	response.set_cookie('viewed_post',value=newcookie)
 
@@ -138,7 +175,8 @@ def detail_post(request, category=None, slug=None):
 
 @cache_page(60 * 15)
 def category(request, category=None):
-	if request.LANGUAGE_CODE == 'vi':
+	lang = request.LANGUAGE_CODE
+	if lang == 'vi':
 		cate= get_object_or_404(Category,slug=category)
 	else:
 		cate= get_object_or_404(Category,slug_en=category)
@@ -150,7 +188,8 @@ def category(request, category=None):
 	posts = paginator.page(1)
 
 	categories = Category.objects.all().order_by('order')
-	return render_to_response('home/index.html', {"posts":posts,"categories":categories, "cate_current":cate,"lang":request.LANGUAGE_CODE}, context_instance=RequestContext(request))
+	redirect = set_redirect(lang, "category", None, cate)
+	return render_to_response('home/index.html', {"redirect": redirect ,"posts":posts,"categories":categories, "cate_current":cate,"lang":request.LANGUAGE_CODE}, context_instance=RequestContext(request))
 
 def get_array_field(dict_list, field):
     arr_return = []
