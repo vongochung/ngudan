@@ -306,6 +306,26 @@ def get_images(request):
 	serialized_data = json.dumps({"html": html})
 	return HttpResponse(serialized_data, mimetype='application/json')
 
+@login_required
+def get_images_more(request):
+	if request.method == 'POST':
+		page = request.POST.get('page')
+		images_list = IMAGE_STORE.objects.all().order_by('-created_date')
+		paginator = Paginator(images_list, 6)
+		try:
+			imagesPage = paginator.page(page)
+		except PageNotAnInteger:
+			return HttpResponse(status=400)
+		urls = []
+		for blob in imagesPage:
+			urls.append(images.get_serving_url(blob.blob_key))
+		data = {"urls" : urls, "images":imagesPage}
+		html = render_to_string("image/image_ajax.html", data)
+		serialized_data = json.dumps({"html": html})
+		return HttpResponse(serialized_data, mimetype='application/json')
+
+	return HttpResponse(status=400)
+
 def commented(request):
 	if request.method == "POST":
 		post = get_object_or_404(POST, pk=request.POST["p"])

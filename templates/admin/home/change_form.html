@@ -10,6 +10,10 @@
   .upload-image{
     display: inline-block !important;
   }
+  .img-l:hover{
+  	cursor: pointer;
+  	border:solid 1px #ccc;
+  }
 </style>
 {% endblock %}
 {% block extrahead %}{{ block.super }}
@@ -30,10 +34,11 @@
         $(document).on("click", "#select-image", function(){
             $.ajax({
               url: '/get-images/',
-              type: 'GET'
+              type: 'GET',
+              cache: true
             })
             .done(function(data) {    
-                $("#image-content").html(data.html);            
+                $("#wrap-image").html(data.html);            
             })
             .fail(function() {
                 console.log("error");
@@ -50,6 +55,30 @@
 
         });
 
+        $(document).on("click",".viewmore-image",function(e) {
+		    var $ele = $(this),
+		    page = $(this).data("page"),
+		    data = {
+		        "page": page
+		    };
+		    $ele.parent().remove();
+		    $.ajax({
+		        url: '/get-more-images/',
+		        type: 'POST',
+		        data: data,
+		    })
+		    .done(function(data) {    
+		        $("#wrap-image").append(data.html);           
+		    })
+		    .fail(function() {
+		        console.log("error");
+		    })
+		    .always(function() {
+		        $ele.parent().remove();
+		    });
+		        
+		});
+
 	});
 
 </script>
@@ -65,6 +94,8 @@
         <h4 class="modal-title" id="myModalLabel">{% trans "Ảnh của bạn" %}</h4>
       </div>
       <div class="modal-body" id="image-content">
+      	<div id="wrap-image" style="min-height:500px;max-height:500px;overflow-y:scroll">
+      	</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Đóng" %}</button>

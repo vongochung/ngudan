@@ -32,6 +32,10 @@ class CustomCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'order')
     form = CategoryForm
 
-admin.site.register(IMAGE_STORE)
+class CustomIMAGEAdmin(admin.ModelAdmin):
+    readonly_fields = ('image_tag',)
+    list_display = ('file_name', 'image_tag',)
+
+admin.site.register(IMAGE_STORE, CustomIMAGEAdmin)
 admin.site.register(POST, CustomPOSTAdmin)
 admin.site.register(Category, CustomCategoryAdmin)

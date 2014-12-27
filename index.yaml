@@ -115,6 +115,34 @@ indexes:
   - name: date
     direction: desc
 
+- kind: home_post
+  properties:
+  - name: comments
+  - name: title
+  - name: __key__
+    direction: desc
+
+- kind: home_post
+  properties:
+  - name: title
+  - name: __key__
+    direction: desc
+
+- kind: home_post
+  properties:
+  - name: title
+  - name: comments
+  - name: __key__
+    direction: desc
+
+- kind: home_post
+  properties:
+  - name: title
+    direction: desc
+  - name: comments
+  - name: __key__
+    direction: desc
+
 - kind: home_taichinh
   properties:
   - name: __key__

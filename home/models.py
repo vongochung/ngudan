@@ -10,6 +10,8 @@ from google.appengine.api import memcache
 from google.appengine.ext import blobstore
 from django.core.cache import cache
 
+from google.appengine.api import images
+
 from tinymce.models import HTMLField
 
 class UtcTzinfo(datetime.tzinfo):
@@ -73,9 +75,15 @@ class IMAGE_STORE(models.Model):
     def __unicode__(self):
         return u"%s" % self.file_name
 
+    def image_tag(self):
+        return u'<img src="%s=s100" />' % images.get_serving_url(self.blob_key)
+
     def delete(self, *args, **kwargs):
         blobstore.delete(self.blob_key)
         super(IMAGE_STORE, self).delete(*args, **kwargs)
+
+    image_tag.short_description = 'Image'
+    image_tag.allow_tags = True
 
 class POST(models.Model):
     category = models.ForeignKey(Category, null=False, related_name='page_category')
