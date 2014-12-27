@@ -12,6 +12,7 @@ class POSTForm(forms.ModelForm):
 
 class CustomPOSTAdmin(admin.ModelAdmin):
     fieldsets = None
+    list_display = ('title', 'comments')
     form = POSTForm
     def save_model(self, request, obj, form, change): 
         instance = form.save(commit=False)

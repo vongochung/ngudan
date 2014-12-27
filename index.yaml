@@ -51,6 +51,12 @@ indexes:
   - name: __key__
     direction: desc
 
+- kind: django_site
+  properties:
+  - name: domain
+  - name: __key__
+    direction: desc
+
 - kind: home_category
   properties:
   - name: __key__

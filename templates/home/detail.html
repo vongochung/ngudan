@@ -91,6 +91,9 @@ https://i1.ytimg.com/vi/{{ post.link  }}/default.jpg
               <div class="logo"></div>
           </div>
       </div>
+      <div class="share">
+          <div class="fb-like" data-href="{{HOST}}/{{post.category.slug}}/{{post.slug}}/" data-width="100" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
+      </div>
       <div class="comment-facebook">
       <div class="fb-comments" data-href="{{HOST}}/{{ post.category.slug }}/{{ post.slug }}/" data-width="100%" data-numposts="5" data-colorscheme="light"></div>
     </div>
@@ -119,32 +122,6 @@ https://i1.ytimg.com/vi/{{ post.link  }}/default.jpg
 {% endblock %}
 {% block js %}
   <script type="text/javascript">
-        $(function() {            
-            loading($("#relative-post"));
-            var lang = "{{lang}}",
-            url = "/relative-post/{{ post.category.slug }}/";
-
-            if (lang != "vi"){
-              url = "/relative-post/{{ post.category.slug_en }}/";
-            }
-            setTimeout(function () {
-                $.ajax({
-                    url: url,
-                    type: "GET",
-                    data:{"post":"{{ post.id }}"},
-                    dataType: 'json',  
-                    success: function (result) {
-                        loading($("#relative-post"));
-                        $("#relative-post").append(result.html);
-                        displayPlayer();
-                        $('[data-toggle="popover"]').popover({trigger: 'hover','placement': 'top'});
-                    },
-                    complete: function () {
-                        console.log("xong");
-                    }
-                });
-            }, 3000);
-        
-        });
+    function comment_create(e){$.ajax({url:"/commented/",type:"POST",data:{p:"{{post.id}}"}}).done(function(e){console.log("commented")}).fail(function(){console.log("error comment")}).always(function(){})}function comment_remove(e){$.ajax({url:"/commented/",type:"POST",data:{p:"{{post.id}}",type:"removed"}}).done(function(e){console.log("removed")}).fail(function(){console.log("error comment")}).always(function(){})}function edge_create(e){$.ajax({url:"/liked/",type:"POST",data:{p:"{{post.id}}"}}).done(function(e){console.log("liked")}).fail(function(){console.log("error liked")}).always(function(){})}function edge_remove(e){$.ajax({url:"/liked/",type:"POST",data:{p:"{{post.id}}",type:"unliked"}}).done(function(e){console.log("unliked")}).fail(function(){console.log("error unliked")}).always(function(){})}$(function(){loading($("#relative-post"));var e="{{lang}}",t="/relative-post/{{ post.category.slug }}/";if(e!="vi"){t="/relative-post/{{ post.category.slug_en }}/"}setTimeout(function(){$.ajax({url:t,type:"GET",data:{post:"{{ post.id }}"},dataType:"json",success:function(e){loading($("#relative-post"));$("#relative-post").append(e.html);displayPlayer();$('[data-toggle="popover"]').popover({trigger:"hover",placement:"top"})},complete:function(){console.log("xong")}})},3e3)});window.fbAsyncInit=function(){FB.init({appId:"1504773003132119",cookie:true,xfbml:true,version:"v2.2"});FB.Event.subscribe("comment.create",comment_create);FB.Event.subscribe("comment.remove",comment_remove);FB.Event.subscribe("edge.create",edge_create);FB.Event.subscribe("edge.remove",edge_remove)}
   </script>
 {% endblock %}

@@ -55,6 +55,7 @@
 </script>
 {% endblock %}
 {% block object-tools %}
+{% if user.is_superuser %}
 <!-- Modal -->
 <div class="modal fade" id="test" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
   <div class="modal-dialog">
@@ -79,7 +80,7 @@
   </form>
   <button class="btn btn-success" data-toggle="modal" data-target="#test" id="select-image">{% trans "Chọn ảnh" %}</button>
 </div>
-
+{% endif %}
 
 
 {% endblock %}

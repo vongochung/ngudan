@@ -20,7 +20,7 @@ from google.appengine.api import images
 import cgi
 now = datetime.now()
 
-#@cache_page(60 * 3)
+@cache_page(60 * 5)
 def index(request, views=None):
 	posts_list = None
 	views_most = False
@@ -153,10 +153,15 @@ def get_posts_detail_more(request):
 def detail_post(request, category=None, slug=None):
 	lang =  request.LANGUAGE_CODE
 	if lang == 'vi':
-		post = get_object_or_404(POST, slug=slug)
+		try:
+			post = POST.objects.get(slug_en=slug)
+		except:
+			post = get_object_or_404(POST, slug=slug)
 	else:
-		post = get_object_or_404(POST, slug_en=slug)
-
+		try:
+			post = POST.objects.get(slug=slug)
+		except:
+			post = get_object_or_404(POST, slug_en=slug)
 	post.updateView()
 	oldcookie = MultiCookie(cookie=request.COOKIES.get('viewed_post'))
 	list_viewed = oldcookie.values
@@ -180,9 +185,15 @@ def detail_post(request, category=None, slug=None):
 def category(request, category=None):
 	lang = request.LANGUAGE_CODE
 	if lang == 'vi':
-		cate= get_object_or_404(Category,slug=category)
+		try:
+			cate= Category.objects.get(slug_en=category)
+		except:	
+			cate= get_object_or_404(Category,slug=category)
 	else:
-		cate= get_object_or_404(Category,slug_en=category)
+		try:
+			cate= Category.objects.get(slug=category)
+		except:
+			cate= get_object_or_404(Category,slug_en=category)
 	posts_list = memcache.get(category)
 	if posts_list is None:		
 		posts_list = POST.objects.filter(category=cate).order_by('-date')
@@ -289,9 +300,28 @@ def get_images(request):
 	imagesPage = paginator.page(1)
 	urls = []
 	for blob in imagesPage:
-		#img = images.Image(blob_key=blob_info.key())
 		urls.append(images.get_serving_url(blob.blob_key))
 	data = {"urls" : urls, "images":imagesPage}
 	html = render_to_string("image/image_ajax.html", data)
 	serialized_data = json.dumps({"html": html})
 	return HttpResponse(serialized_data, mimetype='application/json')
+
+def commented(request):
+	if request.method == "POST":
+		post = get_object_or_404(POST, pk=request.POST["p"])
+		if "type" in request.POST:
+			post.updateComment("removed")
+		else:
+			post.updateComment()
+		return HttpResponse(status=200)
+	return HttpResponse(status=400)
+
+def liked(request):
+	if request.method == "POST":
+		post = get_object_or_404(POST, pk=request.POST["p"])
+		if "type" in request.POST:
+			post.updateLike("unliked")
+		else:
+			post.updateLike()
+		return HttpResponse(status=200)
+	return HttpResponse(status=400)

@@ -17,6 +17,7 @@ INSTALLED_APPS = (
     #'django_admin_bootstrapped.bootstrap3',
     #'django_admin_bootstrapped',
     'django.contrib.admin',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.humanize',
     'django.contrib.auth',
@@ -33,6 +34,8 @@ INSTALLED_APPS = (
     'tinymce',
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
+    'django.contrib.sitemaps',
+    'django.contrib.flatpages',
 )
 AUTHENTICATION_BACKENDS = (
     'permission_backend_nonrel.backends.NonrelPermissionBackend',
@@ -62,6 +65,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
 )
 
+SITE_ID = 1
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (

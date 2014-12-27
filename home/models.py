@@ -44,6 +44,10 @@ class Category(models.Model):
     def __unicode__(self):
         return self.name
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ("list_post_category", [self.slug])
+
     @staticmethod
     def get_category(self, category_id=None):
         categories = Category.objects.filter(parent_id=category_id)
@@ -93,12 +97,35 @@ class POST(models.Model):
     def __unicode__(self):
         return u'%s' % self.title
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ("detail_post", [self.category.slug,self.slug])
+
     def updateView(self):
         if self.views is None:
             self.views = 1
         else:
             self.views = self.views + 1
         self.save()
+
+    def updateComment(self, typePost=None):
+        if self.comments is None and typePost is None:
+            self.comments = 1
+        elif self.comments is not None and typePost is not None :
+            self.comments = self.comments - 1
+        elif self.comments is not None and typePost is None:
+            self.comments = self.comments + 1
+        self.save()
+
+    def updateLike(self, typePost=None):
+        if self.likes is None and typePost is None:
+            self.likes = 1
+        elif self.likes is not None and typePost is not None :
+            self.likes = self.likes - 1
+        elif self.likes is not None and typePost is None:
+            self.likes = self.likes + 1
+        self.save()
+    
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)

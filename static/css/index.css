@@ -347,6 +347,10 @@ footer ul li{
 #language span{
     color: #fff;
 }
+.share{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 /*======google-search-main====*/
 .gssb_c{
     z-index: 99999 !important;
