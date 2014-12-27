@@ -7,6 +7,9 @@
 	body{
 		font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif !important;
 	}
+  .upload-image{
+    display: inline-block !important;
+  }
 </style>
 {% endblock %}
 {% block extrahead %}{{ block.super }}
@@ -17,7 +20,36 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script> 
 <script type="text/javascript">
 	$(function() {
-		$("#id_name").val($("#id_name").val()+"<img src='https://cloud.google.com/appengine/docs/python/images/transform_before.jpg' />");
+        $(document).on("click", "#btn-upload", function(){
+            if($("#file").val() == ""){
+              return false;
+            }
+            return true;
+        });
+
+        $(document).on("click", "#select-image", function(){
+            $.ajax({
+              url: '/get-images/',
+              type: 'GET'
+            })
+            .done(function(data) {    
+                $("#image-content").html(data.html);            
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always(function() {
+            });
+        });
+
+        $(document).on("click", ".img-blob", function(){
+              url = $(this).data("src");
+              s = '<img src="'+url+'" />';
+              $(tinymce.get('id_name').getBody()).append(s);
+              $("#test").modal("hide");
+
+        });
+
 	});
 
 </script>
@@ -31,8 +63,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">{% trans "Ảnh của bạn" %}</h4>
       </div>
-      <div class="modal-body">
-        ...
+      <div class="modal-body" id="image-content">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Đóng" %}</button>
@@ -40,9 +71,15 @@
     </div>
   </div>
 </div>
-<button class="btn btn-success">{% trans "Thêm ảnh" %}</button>
-<button class="btn btn-success">{% trans "Upload" %}</button>
-<button class="btn btn-success" data-toggle="modal" data-target="#test">{% trans "Chọn ảnh" %}</button>
+<div class="module text-center" >
+  <form action="{{url_upload_image}}" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="redirect" value="{{request.get_full_path}}">
+    <input type="file" id="file" name="file" class="upload-image">
+    <button class="btn btn-primary" id="btn-upload">{% trans "Upload" %}</button>
+  </form>
+  <button class="btn btn-success" data-toggle="modal" data-target="#test" id="select-image">{% trans "Chọn ảnh" %}</button>
+</div>
+
 
 
 {% endblock %}

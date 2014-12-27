@@ -93,6 +93,11 @@ indexes:
   - name: date
     direction: desc
 
+- kind: home_image_store
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: home_post
   properties:
   - name: __key__

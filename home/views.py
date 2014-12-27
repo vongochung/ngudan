@@ -7,7 +7,7 @@ from django.shortcuts import render_to_response, redirect, HttpResponse, get_obj
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
-from home.models import POST, Category
+from home.models import POST, Category, IMAGE_STORE
 from datetime import datetime
 from django.core.paginator import Paginator, PageNotAnInteger
 from google.appengine.api import memcache
@@ -15,6 +15,9 @@ import json
 from django.views.decorators.cache import cache_page
 from django.db.models import Q
 from home.function import MultiCookie
+from google.appengine.ext import blobstore
+from google.appengine.api import images
+import cgi
 now = datetime.now()
 
 #@cache_page(60 * 3)
@@ -230,4 +233,65 @@ def category_post_relative(request, category=None):
 	html = render_to_string("post/post_relative_ajax.html", data)
 	serialized_data = json.dumps({"html": html})
 
+	return HttpResponse(serialized_data, mimetype='application/json')
+
+@login_required
+def upload_image(request):
+	upload_files = get_uploads(request, field_name='file', populate_post=True)  # 'file' is file upload field in the form
+	blob_info = upload_files[0]
+	image = IMAGE_STORE()
+	image.blob_key = blob_info.key()
+	image.created_date = blob_info.creation
+	image.size = blob_info.size
+	image.file_name = blob_info.filename
+	image.save()
+	return redirect(request.POST["redirect"])
+
+def get_uploads(request, field_name=None, populate_post=False):
+    """Get uploads sent to this handler.
+    Args:
+      field_name: Only select uploads that were sent as a specific field.
+      populate_post: Add the non blob fields to request.POST
+    Returns:
+      A list of BlobInfo records corresponding to each upload.
+      Empty list if there are no blob-info records for field_name.
+    """
+ 
+    if hasattr(request,'__uploads') == False:
+        request.META['wsgi.input'].seek(0)
+        fields = cgi.FieldStorage(request.META['wsgi.input'], environ=request.META)
+ 
+        request.__uploads = {}
+        if populate_post:
+            request.POST = {}
+ 
+        for key in fields.keys():
+            field = fields[key]
+            if isinstance(field, cgi.FieldStorage) and 'blob-key' in field.type_options:
+                request.__uploads.setdefault(key, []).append(blobstore.parse_blob_info(field))
+            elif populate_post:
+                request.POST[key] = field.value
+    if field_name:
+        try:
+            return list(request.__uploads[field_name])
+        except KeyError:
+            return []
+    else:
+        results = []
+        for uploads in request.__uploads.itervalues():
+            results += uploads
+        return results
+
+@login_required
+def get_images(request):
+	images_list = IMAGE_STORE.objects.all().order_by('-created_date')
+	paginator = Paginator(images_list, 6)
+	imagesPage = paginator.page(1)
+	urls = []
+	for blob in imagesPage:
+		#img = images.Image(blob_key=blob_info.key())
+		urls.append(images.get_serving_url(blob.blob_key))
+	data = {"urls" : urls, "images":imagesPage}
+	html = render_to_string("image/image_ajax.html", data)
+	serialized_data = json.dumps({"html": html})
 	return HttpResponse(serialized_data, mimetype='application/json')

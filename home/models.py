@@ -7,6 +7,7 @@ from django.core.paginator import Paginator, PageNotAnInteger
 
 from django.template.defaultfilters import slugify
 from google.appengine.api import memcache
+from google.appengine.ext import blobstore
 from django.core.cache import cache
 
 from tinymce.models import HTMLField
@@ -60,6 +61,17 @@ class Category(models.Model):
             memcache.delete('categories-en')
         super(Category, self).save(*args, **kwargs)
 
+class IMAGE_STORE(models.Model):
+    blob_key = models.CharField(max_length=500,  null=True)
+    file_name = models.CharField(max_length=235, null=True)
+    size = models.IntegerField(null=True,blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    def __unicode__(self):
+        return u"%s" % self.file_name
+
+    def delete(self, *args, **kwargs):
+        blobstore.delete(self.blob_key)
+        super(IMAGE_STORE, self).delete(*args, **kwargs)
 
 class POST(models.Model):
     category = models.ForeignKey(Category, null=False, related_name='page_category')

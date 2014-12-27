@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from home.models import  POST,Category
+from home.models import  POST,Category, IMAGE_STORE
 
 
 class POSTForm(forms.ModelForm):
@@ -31,5 +31,6 @@ class CustomCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'order')
     form = CategoryForm
 
+admin.site.register(IMAGE_STORE)
 admin.site.register(POST, CustomPOSTAdmin)
 admin.site.register(Category, CustomCategoryAdmin)

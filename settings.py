@@ -58,6 +58,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.core.context_processors.media',
     'context_processors.host_name',
+    'context_processors.url_upload_image',
     "django.core.context_processors.i18n",
 )
 
