@@ -114,6 +114,15 @@ ul.navbar-nav {
     border-color: #e5e6e9 #dfe0e4 #d0d1d5;
     -webkit-border-radius: 3px;
 }
+
+
+.w-post{
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-top: 5px;
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0 2px 5px #716161;
+}
 .post-detail{
     padding-left: 15px !important;
 }
@@ -316,10 +325,12 @@ footer ul li{
 }
 
 .view-list{
-    background-color: #CC181E;
-    color: #fff;
+    color: #000;
     font-weight: bold;
     clear: both;
+    font-size: 24px;
+    border-bottom: 4px solid #CC181E;
+    margin: 5px;
 }
 .clear-left{
     clear: left;
